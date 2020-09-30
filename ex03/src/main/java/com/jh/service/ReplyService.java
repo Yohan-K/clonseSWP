@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.jh.domain.ReplyVO;
 import com.jh.domain.Criteria;
+import com.jh.domain.ReplyPageDTO;
 
 
 public interface ReplyService {
 
-	public void register(ReplyVO vo);
+	public int register(ReplyVO vo);
 
 	public ReplyVO get(Long rno);
 
@@ -19,5 +20,7 @@ public interface ReplyService {
 	public List<ReplyVO> getList(Criteria cri, Long bno);
 
 	public int getTotal(Criteria cri);
+	
+	public ReplyPageDTO getListPage(Criteria cri, Long bno);
 
 }

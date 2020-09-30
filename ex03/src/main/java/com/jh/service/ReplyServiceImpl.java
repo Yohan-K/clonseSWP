@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jh.domain.ReplyVO;
 import com.jh.domain.Criteria;
+import com.jh.domain.ReplyPageDTO;
 import com.jh.mapper.ReplyMapper;
 
 import lombok.AllArgsConstructor;
@@ -22,11 +23,11 @@ public class ReplyServiceImpl implements ReplyService {
 	private ReplyMapper mapper;
 
 	@Override
-	public void register(ReplyVO vo) {
+	public int register(ReplyVO vo) {
 
 		log.info("register......" + vo);
 
-		mapper.insert(vo);
+		return mapper.insert(vo);
 	}
 
 	@Override
@@ -62,8 +63,12 @@ public class ReplyServiceImpl implements ReplyService {
 		return mapper.getListWithPaging(cri, bno);
 	}
 
+	@Override 
+	public int getTotal(Criteria cri) { return 0; }
+
 	@Override
-	public int getTotal(Criteria cri) {
-		return 0;
+	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+		return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno));
 	}
+	
 }

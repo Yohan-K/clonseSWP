@@ -30,22 +30,6 @@ public class BoardController {
 
 	}
 
-	// @GetMapping("/list")
-	// public void list(Model model) {
-	//
-	// log.info("list");
-	// model.addAttribute("list", service.getList());
-	//
-	// }
-
-	// @GetMapping("/list")
-	// public void list(Criteria cri, Model model) {
-	//
-	// log.info("list: " + cri);
-	// model.addAttribute("list", service.getList(cri));
-	//
-	// }
-
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
 
@@ -73,29 +57,12 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
-	// @GetMapping({ "/get", "/modify" })
-	// public void get(@RequestParam("bno") Long bno, Model model) {
-	//
-	// log.info("/get or modify ");
-	// model.addAttribute("board", service.get(bno));
-	// }
-
 	@GetMapping({ "/get", "/modify" })
 	public void get(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
 
 		log.info("/get or modify");
 		model.addAttribute("board", service.get(bno));
 	}
-
-	// @PostMapping("/modify")
-	// public String modify(BoardVO board, RedirectAttributes rttr) {
-	// log.info("modify:" + board);
-	//
-	// if (service.modify(board)) {
-	// rttr.addFlashAttribute("result", "success");
-	// }
-	// return "redirect:/board/list";
-	// }
 
 	@PostMapping("/modify")
 	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
@@ -112,17 +79,6 @@ public class BoardController {
 
 		return "redirect:/board/list";
 	}
-
-	// @PostMapping("/remove")
-	// public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr)
-	// {
-	//
-	// log.info("remove..." + bno);
-	// if (service.remove(bno)) {
-	// rttr.addFlashAttribute("result", "success");
-	// }
-	// return "redirect:/board/list";
-	// }
 
 	@PostMapping("/remove")
 	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
