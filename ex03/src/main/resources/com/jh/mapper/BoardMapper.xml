@@ -80,11 +80,11 @@
 		resultType="com.jh.domain.BoardVO">
   <![CDATA[
   select 
-    bno, title, content, writer, regdate, updatedate
+    bno, title, content, writer, regdate, updatedate, replycnt
   from 
       (
       select /*+INDEX_DESC(t_board pk_board) */
-        rownum rn, bno, title, content, writer, regdate, updatedate 
+        rownum rn, bno, title, content, writer, regdate, updatedate, replycnt
       from 
         t_board
       where 
@@ -127,5 +127,7 @@
 		bno > 0
 		
 	</select>
-
+	<update id="updateReplyCnt">
+		update t_board set replycnt = replycnt + #{amount} where bno = #{bno}	
+	</update>
 </mapper>
