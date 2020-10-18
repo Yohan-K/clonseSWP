@@ -7,16 +7,67 @@
 <title>Insert title here</title>
 </head>
 <body>
+<h1>Upload With Ajax</h1>
+
+<style>
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+}
+
+.uploadResult ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.uploadResult ul li {
+	list-style: none;
+	padding: 10px;
+}
+
+.uploadResult ul li img {
+	width: 100px;
+}
+</style>
+
+<style>
+.bigPictureWrapper {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top:0%;
+  width:100%;
+  height:100%;
+  background-color: gray; 
+  z-index: 100;
+}
+
+.bigPicture {
+  position: relative;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
 	<div class='uploadDiv'>
 		<input type='file' name='uploadFile' multiple>
 	</div>
 	
+	<div class='uploadResult'>
+		<ul>
+		
+		</ul>
+	</div>
 	<button id='uploadBtn'>Upload</button>
 	
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
 <script>
-	$(document).ready(function(){
+	/* $(document).ready(function(){
 		
 		$("#uploadBtn").on("click", function(e){
 			
@@ -46,7 +97,7 @@
 			}); //$.ajax
 		
 		});
-	});
+	}); */
 	
 	var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 	var maxSize = 5242880; //5MB
@@ -64,6 +115,8 @@
 		}
 		return true;
 	}
+	
+		var cloneObj = $(".uploadDiv").clone();
 	
 	$("#uploadBtn").on("click", function(e){
 		
@@ -85,16 +138,42 @@
 		}
 		
 		$.ajax({
-			url : 'uploadAjaxAction',
+			url : '/uploadAjaxAction',
 			processData: false,
 			contentType: false,
 			data: formData,
 			type: 'POST',
+			dataType : 'json',
 			success: function(result){
-				alert("Uploaded");
+				
+				console.log(result);
+				
+				showUploadedFile(result);
+				
+				$(".uploadDiv").html(cloneObj.html());
 			}
 		}); //$.ajax
 	});
+	
+	var uploadResult = $(".uploadResult ul");
+	
+		function showUploadedFile(uploadResultArr) {
+			
+			var str = "";
+			
+			$(uploadResultArr).each(function(i, obj) {
+				
+				if(!obj.image) {
+					str += "<li><img src='/resources/img/attach.png'>" + obj.fileName + "</li>";
+				} else {
+					//str += "<li>" + obj.fileName + "</li>";
+					var fileCallPath = encodeURIComponent(obj.uploadPath+ "/s_"+obj.uuid+"_"+obj.fileName);
+					str += "<li><img src='/display?fileName="+fileCallPath+"'></li>";
+				}
+			});
+			
+			uploadResult.append(str);
+		}
 </script>
 </body>
 </html>
